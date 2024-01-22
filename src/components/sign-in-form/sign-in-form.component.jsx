@@ -8,6 +8,7 @@ import FormInput from "../from-input/form-input.component";
 import "./sign-in-form.styles.scss";
 import Button from "../button/button.component";
 
+
 const defaultFormFields = {
   email: "",
   password: "",
@@ -17,6 +18,7 @@ const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
+
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
@@ -24,16 +26,18 @@ const SignInForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await signInAuthUserWIthEmailAndPassword(email, password);
-      console.log(response);
+      const { user } = await signInAuthUserWIthEmailAndPassword(
+        email,
+        password
+      );
       resetFormFields();
     } catch (error) {
       switch (error.code) {
-        case 'auth/wrong-password':
+        case "auth/wrong-password":
           alert("incorrect password for email");
           break;
-        case 'auth/user-not-found':
-          alert('nno user associated with email')
+        case "auth/user-not-found":
+          alert("nno user associated with email");
           break;
         default:
           console.log(error);
@@ -47,8 +51,8 @@ const SignInForm = () => {
   };
 
   const signInWithGoogle = async () => {
-    const { user } = await signInWIthGooglePopup();
-    await createUserDocumentFromAuth(user);
+    await signInWIthGooglePopup();
+    
   };
 
   return (
